@@ -412,34 +412,85 @@
             </button>
         </div>
 
-        <!-- MODAL KERANJANG -->
+        <!-- MODAL KERANJANG & FORM DATA PEMBELI -->
         <div id="cartModal" class="fixed inset-0 z-[60] bg-black/60 hidden flex-col justify-end max-w-md mx-auto">
             <!-- Overlay clickable untuk tutup modal -->
             <div class="absolute inset-0" onclick="toggleModal('cartModal')"></div>
             
             <!-- Modal Content (Slide up) -->
-            <div id="cartModalContent" class="bg-white w-full rounded-t-3xl p-6 relative z-10 modal-enter max-h-[85vh] flex flex-col shadow-2xl">
+            <div id="cartModalContent" class="bg-white w-full rounded-t-3xl p-6 relative z-10 modal-enter max-h-[90vh] flex flex-col shadow-2xl overflow-y-auto pb-8">
                 <!-- Header -->
-                <div class="flex justify-between items-center mb-5 pb-4 border-b border-gray-100">
-                    <h2 class="text-xl font-black text-wills-black">Keranjang Kamu 🛒</h2>
+                <div class="flex justify-between items-center mb-5 pb-4 border-b border-gray-100 sticky top-0 bg-white z-20">
+                    <h2 class="text-xl font-black text-wills-black">Keranjang & Checkout 🛒</h2>
                     <button onclick="toggleModal('cartModal')" class="bg-gray-100 p-2 rounded-full text-gray-500 hover:bg-gray-200">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
 
-                <!-- Daftar Item -->
-                <div id="cartItemList" class="overflow-y-auto flex-1 space-y-4 pr-2">
-                    <!-- Item akan di-inject pakai JavaScript -->
+                <!-- Bagian 1: Daftar Item Keranjang -->
+                <div class="mb-6">
+                    <h3 class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">Pesanan Kamu</h3>
+                    <div id="cartItemList" class="space-y-3">
+                        <!-- Item akan di-inject pakai JavaScript -->
+                    </div>
                 </div>
 
-                <!-- Notes / Catatan -->
-                <div class="mt-4 pt-4 border-t border-gray-100">
-                    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Catatan Pesanan (Opsional)</label>
-                    <input type="text" id="orderNotes" placeholder="Cth: Es dipisah, gulanya dikit aja ya min." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-wills-red focus:ring-1 focus:ring-wills-red">
+                <!-- Bagian 2: Form Data Pembeli -->
+                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-6">
+                    <h3 class="text-sm font-bold text-wills-red mb-4 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        Lengkapi Data Pengiriman
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Nama Pemesan -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">Nama Kamu *</label>
+                            <input type="text" id="buyerName" placeholder="Masukkan nama..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-wills-red focus:ring-1 focus:ring-wills-red transition-all">
+                            <p id="errorName" class="text-xs text-red-500 mt-1 hidden">Nama wajib diisi ya!</p>
+                        </div>
+
+                        <!-- Nomor WhatsApp -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">No. WhatsApp Kamu *</label>
+                            <input type="tel" id="buyerPhone" placeholder="Cth: 08123456789" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-wills-red focus:ring-1 focus:ring-wills-red transition-all">
+                            <p id="errorPhone" class="text-xs text-red-500 mt-1 hidden">Nomor WhatsApp wajib diisi ya!</p>
+                        </div>
+
+                        <!-- Pilihan Outlet / Pengambilan -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">Pilih Outlet Pengambilan *</label>
+                            <select id="buyerOutlet" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-wills-red focus:ring-1 focus:ring-wills-red transition-all appearance-none cursor-pointer">
+                                <option value="" disabled selected>-- Pilih Outlet --</option>
+                                <option value="Outlet Pasar Rebo">Outlet Pasar Rebo</option>
+                                <option value="Outlet Tegal Munjul">Outlet Tegal Munjul</option>
+                                <option value="Outlet Depan UPI">Outlet Depan UPI</option>
+                                <option value="Pesan Antar (Jasur)">Pesan Antar (Lewat Jasur)</option>
+                            </select>
+                            <p id="errorOutlet" class="text-xs text-red-500 mt-1 hidden">Silakan pilih outlet dulu ya!</p>
+                        </div>
+
+                        <!-- Opsi Pembayaran -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">Metode Pembayaran *</label>
+                            <select id="buyerPayment" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-wills-red focus:ring-1 focus:ring-wills-red transition-all appearance-none cursor-pointer">
+                                <option value="" disabled selected>-- Pilih Metode Pembayaran --</option>
+                                <option value="Cash">Cash (Bayar di Kasir / Kurir)</option>
+                                <option value="QRIS">QRIS</option>
+                            </select>
+                            <p id="errorPayment" class="text-xs text-red-500 mt-1 hidden">Silakan pilih metode pembayaran!</p>
+                        </div>
+
+                        <!-- Alamat / Catatan Khusus -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">Alamat (Jika Jasur) / Catatan Pesanan</label>
+                            <textarea id="buyerNotes" rows="2" placeholder="Cth: Alamat lengkap untuk Jasur, atau request pesanan 'Es dipisah, gula dikit'." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-wills-red focus:ring-1 focus:ring-wills-red transition-all resize-none"></textarea>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Total & Checkout Button -->
-                <div class="mt-6 pt-4 border-t-2 border-dashed border-gray-200">
+                <div class="pt-4 border-t-2 border-dashed border-gray-200 mt-auto sticky bottom-0 bg-white">
                     <div class="flex justify-between items-center mb-4">
                         <span class="font-bold text-gray-500">Total Pembayaran</span>
                         <span id="modalTotalPrice" class="font-black text-xl text-wills-black">Rp 0</span>
@@ -455,49 +506,37 @@
 
     </main>
 
-    <!-- SCRIPT LOGIKA KERANJANG & MUSIK -->
+    <!-- SCRIPT LOGIKA KERANJANG, FORM & MUSIK -->
     <script>
         // --- LOGIKA KERANJANG BELANJA ---
-        let cart = []; // Tempat menyimpan data menu yang di-klik
+        let cart = [];
 
-        // Format angka jadi Rupiah (misal 15000 -> 15.000)
         const formatRupiah = (angka) => {
             return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         };
 
-        // Fungsi saat tombol harga diklik
         function addToCart(name, variant, price) {
-            // Cek apakah item ini sudah ada di keranjang
             const existingItem = cart.find(item => item.name === name && item.variant === variant);
-            
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
                 cart.push({ name, variant, price, quantity: 1 });
             }
-            
             updateCartUI();
             showToast(`${name} ${variant} ditambahkan!`);
         }
 
-        // Fungsi merubah jumlah barang di dalam modal (+ / -)
         function updateQuantity(index, delta) {
             cart[index].quantity += delta;
-            
-            // Kalau jumlah jadi 0 atau kurang, hapus dari keranjang
             if (cart[index].quantity <= 0) {
                 cart.splice(index, 1);
             }
-            
             updateCartUI();
-            
-            // Kalau keranjang kosong setelah dihapus, tutup modalnya
             if(cart.length === 0) {
                 toggleModal('cartModal', false);
             }
         }
 
-        // Fungsi memperbarui tampilan layar
         function updateCartUI() {
             const defaultBtn = document.getElementById('defaultOrderBtn');
             const cartSummaryBtn = document.getElementById('cartSummaryBtn');
@@ -506,17 +545,15 @@
             let totalItems = 0;
             let totalPrice = 0;
 
-            // Hitung total item & harga
             cart.forEach(item => {
                 totalItems += item.quantity;
                 totalPrice += (item.price * item.quantity);
             });
 
-            // Update baris bawah (Sticky Bottom Bar)
             if (totalItems > 0) {
                 defaultBtn.classList.add('hidden');
                 cartSummaryBtn.classList.remove('hidden');
-                cartSummaryBtn.classList.add('flex'); // pakai flex biar rapi
+                cartSummaryBtn.classList.add('flex');
                 document.getElementById('summaryCount').innerText = totalItems;
                 document.getElementById('summaryPrice').innerText = 'Rp ' + formatRupiah(totalPrice);
             } else {
@@ -525,35 +562,93 @@
                 defaultBtn.classList.remove('hidden');
             }
 
-            // Update isi Modal
             document.getElementById('modalTotalPrice').innerText = 'Rp ' + formatRupiah(totalPrice);
             
             cartItemList.innerHTML = '';
             cart.forEach((item, index) => {
                 const subTotal = item.price * item.quantity;
                 cartItemList.innerHTML += `
-                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-100">
-                        <div class="flex-1">
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-100 last:border-0 last:pb-0">
+                        <div class="flex-1 pr-2">
                             <h4 class="font-bold text-sm text-wills-black leading-tight">${item.name}</h4>
-                            <p class="text-[11px] text-wills-red font-semibold mb-1">${item.variant}</p>
-                            <p class="text-xs font-bold text-gray-500">Rp ${formatRupiah(subTotal)}</p>
+                            <p class="text-[10px] text-gray-500 font-semibold mb-1 uppercase tracking-wider">${item.variant}</p>
+                            <p class="text-xs font-bold text-wills-red">Rp ${formatRupiah(subTotal)}</p>
                         </div>
-                        <div class="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-1 shadow-sm">
-                            <button onclick="updateQuantity(${index}, -1)" class="w-7 h-7 bg-gray-100 rounded-md flex items-center justify-center font-bold text-gray-600 hover:bg-gray-200">-</button>
+                        <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg p-1">
+                            <button onclick="updateQuantity(${index}, -1)" class="w-6 h-6 bg-white rounded flex items-center justify-center font-bold text-gray-600 shadow-sm">-</button>
                             <span class="font-bold text-sm w-4 text-center">${item.quantity}</span>
-                            <button onclick="updateQuantity(${index}, 1)" class="w-7 h-7 bg-wills-red text-white rounded-md flex items-center justify-center font-bold hover:bg-red-700">+</button>
+                            <button onclick="updateQuantity(${index}, 1)" class="w-6 h-6 bg-wills-red text-white rounded flex items-center justify-center font-bold shadow-sm">+</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        // Fungsi Checkout & Bikin Link WhatsApp
+        // --- LOGIKA FORM & CHECKOUT ---
         function checkoutToWA() {
             if(cart.length === 0) return;
 
-            const notes = document.getElementById('orderNotes').value.trim();
-            let waText = "Halo Admin Wills, saya mau order:\n\n";
+            // Ambil data dari form
+            const buyerNameInput = document.getElementById('buyerName');
+            const buyerPhoneInput = document.getElementById('buyerPhone');
+            const buyerOutletSelect = document.getElementById('buyerOutlet');
+            const buyerPaymentSelect = document.getElementById('buyerPayment');
+            const buyerNotesInput = document.getElementById('buyerNotes');
+            
+            const buyerName = buyerNameInput.value.trim();
+            const buyerPhone = buyerPhoneInput.value.trim();
+            const buyerOutlet = buyerOutletSelect.value;
+            const buyerPayment = buyerPaymentSelect.value;
+            const buyerNotes = buyerNotesInput.value.trim();
+
+            // Validasi Input (Pastikan Nama dan Outlet diisi)
+            let isValid = true;
+            
+            if(buyerName === "") {
+                document.getElementById('errorName').classList.remove('hidden');
+                buyerNameInput.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                document.getElementById('errorName').classList.add('hidden');
+                buyerNameInput.classList.remove('border-red-500');
+            }
+
+            if(buyerPhone === "") {
+                document.getElementById('errorPhone').classList.remove('hidden');
+                buyerPhoneInput.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                document.getElementById('errorPhone').classList.add('hidden');
+                buyerPhoneInput.classList.remove('border-red-500');
+            }
+
+            if(buyerOutlet === "") {
+                document.getElementById('errorOutlet').classList.remove('hidden');
+                buyerOutletSelect.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                document.getElementById('errorOutlet').classList.add('hidden');
+                buyerOutletSelect.classList.remove('border-red-500');
+            }
+
+            if(buyerPayment === "") {
+                document.getElementById('errorPayment').classList.remove('hidden');
+                buyerPaymentSelect.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                document.getElementById('errorPayment').classList.add('hidden');
+                buyerPaymentSelect.classList.remove('border-red-500');
+            }
+
+            // Kalau ada yang belum diisi, stop proses checkout
+            if(!isValid) {
+                // Scroll ke bagian form agar user sadar
+                document.getElementById('cartModalContent').scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            // Kalau lolos validasi, buat teks pesanan
+            let waText = `Halo Admin Wills, saya *${buyerName}* mau order:\n\n`;
             let grandTotal = 0;
 
             cart.forEach(item => {
@@ -563,34 +658,49 @@
             });
 
             waText += `\n*Total Harga: Rp ${formatRupiah(grandTotal)}*`;
+            waText += `\n*No. WA Pembeli:* ${buyerPhone}`;
+            waText += `\n*Lokasi/Outlet:* ${buyerOutlet}`;
+            waText += `\n*Pembayaran:* ${buyerPayment}`;
             
-            if(notes !== "") {
-                waText += `\n\n*Catatan:* ${notes}`;
+            if(buyerNotes !== "") {
+                waText += `\n*Catatan/Alamat:* ${buyerNotes}`;
             }
 
-            waText += "\n\nTerima kasih, mohon diproses ya min! 🙏";
+            waText += "\n\nMohon diproses ya min! 🙏";
 
-            // Encode text untuk URL
+            // Buka WA
             const encodedText = encodeURIComponent(waText);
             const waNumber = "6285943691333";
             const waUrl = `https://wa.me/${waNumber}?text=${encodedText}`;
-
-            // Buka di tab baru
             window.open(waUrl, '_blank');
         }
 
-        // --- FUNGSI BANTUAN UI ---
+        // Hapus error state ketika user mulai ngetik/milih
+        document.getElementById('buyerName').addEventListener('input', function() {
+            document.getElementById('errorName').classList.add('hidden');
+            this.classList.remove('border-red-500');
+        });
+        document.getElementById('buyerPhone').addEventListener('input', function() {
+            document.getElementById('errorPhone').classList.add('hidden');
+            this.classList.remove('border-red-500');
+        });
+        document.getElementById('buyerOutlet').addEventListener('change', function() {
+            document.getElementById('errorOutlet').classList.add('hidden');
+            this.classList.remove('border-red-500');
+        });
+        document.getElementById('buyerPayment').addEventListener('change', function() {
+            document.getElementById('errorPayment').classList.add('hidden');
+            this.classList.remove('border-red-500');
+        });
 
-        // Buka / Tutup Modal
+        // --- FUNGSI BANTUAN UI ---
         function toggleModal(modalID, forceState = null) {
             const modal = document.getElementById(modalID);
             const content = document.getElementById('cartModalContent');
-            
             const isHidden = modal.classList.contains('hidden');
             const shouldShow = forceState !== null ? forceState : isHidden;
 
             if (shouldShow) {
-                // Tampilkan
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 setTimeout(() => {
@@ -598,7 +708,6 @@
                     content.classList.add('modal-enter-active');
                 }, 10);
             } else {
-                // Sembunyikan dengan animasi
                 content.classList.remove('modal-enter-active');
                 content.classList.add('modal-exit-active');
                 setTimeout(() => {
@@ -610,15 +719,11 @@
             }
         }
 
-        // Notifikasi popup kecil (Toast)
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toastMessage').innerText = message;
-            
             toast.classList.remove('opacity-0');
             toast.classList.add('opacity-100');
-            
-            // Sembunyikan otomatis setelah 2 detik
             setTimeout(() => {
                 toast.classList.remove('opacity-100');
                 toast.classList.add('opacity-0');
